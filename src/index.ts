@@ -1,28 +1,27 @@
-import express from 'express';
+import app from './app';
 import mongoose from 'mongoose';
-import userRouter from './routes/userRoutes';
+import 'dotenv/config';
 
-const app = express();
 
-app.use(express.json());
+const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000
+const MONGO_DB_URL: string = process.env.MONGO_DB_URL ||
+'mongodb://root:example@localhost:27017';
 
-app.use(userRouter)
+function startServer() {
+  const port: number = PORT
+  app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+  });
+}
 
-const PORT = process.env.PORT || 3000;
-
-const MONGO_DB_URL = process.env.MONGO_DB_URL || 'mongodb://127.0.0.1:27017/mydatabase';
-
-mongoose.connect(MONGO_DB_URL).then((data) => {
-    console.log('MongoDB Connection Succeeded')
-}).catch((err) => {
-    console.log(`Error in DB connection`, err.message)
+mongoose.connect(MONGO_DB_URL)
+    
+mongoose.connection.on('connected', () => {
+  console.log('MongoDB connection established') 
+  startServer()
 })
 
-
-
-
-const server = app.listen(PORT, () => console.log(
-  `Server is running on PORT: ${PORT}`,
-));
-
-export default server;
+mongoose.connection.on('error', (err) => {
+  console.error(`MongoDB connection error: ${err}`);
+  process.exit(1);
+});
