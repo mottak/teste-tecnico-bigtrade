@@ -9,7 +9,6 @@ export const errorMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-
   if (err instanceof CustomError) {
     return res.status(err.status).json({ message: err.message });
   }
