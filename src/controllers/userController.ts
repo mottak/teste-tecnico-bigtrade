@@ -29,4 +29,11 @@ export default class UserController{
     res.status(200).json(user);
   }
 
+  async delete(req: Request, res: Response): Promise<void>  {
+    const { id } = req.params;
+
+    await this.userService.delete(id);
+    res.status(201).json({ message: 'User deleted successfully'});
+  }
+
 }
