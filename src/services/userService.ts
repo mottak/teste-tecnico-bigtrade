@@ -1,8 +1,8 @@
-import IService from '../interfaces/IService';
 import IModel from '../interfaces/IModel';
 import { CustomError } from '../helper/CustomError';
+import IUserService from '../interfaces/IUserService';
 
-export default class UserService<IUser> implements IService<IUser>{
+export default class UserService<IUser> implements IUserService<IUser>{
   private userODM: IModel<IUser>;
 
   constructor(userODM: IModel<IUser>) {
@@ -16,11 +16,9 @@ export default class UserService<IUser> implements IService<IUser>{
   
   async findById(id: string) {
     const user = await this.userODM.getById(id);
-
-    console.log('user service ---', user)
-    if(!user) {
-      throw new CustomError('User not found', 404)
-    }
+   
+    if(!user) throw new CustomError('User not found', 404);
+    
     return user
   }
   async update(id: string, obj: Partial<IUser>) {

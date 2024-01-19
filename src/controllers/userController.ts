@@ -1,17 +1,18 @@
 import { Response, Request } from 'express';
 import IUser from '../interfaces/IUser';
-import IService from '../interfaces/IService';
+import IUserService from '../interfaces/IUserService';
 
 export default class UserController{
-  private userService: IService<IUser>;
+  private userService: IUserService<IUser>;
 
-  constructor(userService: IService<IUser>) {
+  constructor(userService: IUserService<IUser>) {
     this.userService = userService;
   }
 
   async create (req: Request, res: Response<IUser>): Promise<void>  {
     const user: IUser = await this.userService.create({ ...req.body })
     res.status(201).json(user);
+    
   };
 
   async getById(req: Request, res: Response<IUser>): Promise<void>  {
@@ -25,8 +26,9 @@ export default class UserController{
     const { id } = req.params;
     const { body } = req
 
-    const user: IUser = await this.userService.update(id, body)
-    res.status(200).json(user);
+      const user: IUser = await this.userService.update(id, body)
+      res.status(200).json(user);
+    
   }
 
   async delete(req: Request, res: Response): Promise<void>  {
