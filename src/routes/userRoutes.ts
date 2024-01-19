@@ -4,6 +4,7 @@ import UserODM from '../models/user';
 import UserService from '../services/userService'
 import UserController from '../controllers/userController'
 import userSchema from '../models/schemas/userSchema'
+import { newUserSchema } from '../validators/newUserValidator'
 
 const userRouter = Router();
 
@@ -14,6 +15,9 @@ const userODM = new UserODM(userSchema, model('Users', userSchema) );
 const userService = new UserService(userODM)
 const userController = new UserController(userService)
 
-userRouter.post('/users', async (req, res) => userController.create(req, res));
+userRouter.post('/users', async (req, res) => {
+  await newUserSchema.validateAsync(req.body)
+  userController.create(req, res)});
 userRouter.get('/users/:id', async (req, res) => userController.getById(req, res));
+
 export default userRouter;
