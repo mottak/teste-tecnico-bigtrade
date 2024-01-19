@@ -1,5 +1,6 @@
-import { Model, Schema, models, model } from 'mongoose';
+import { Model, Schema, isValidObjectId } from 'mongoose';
 import IModel from '../interfaces/IModel'
+import { CustomError } from '../helper/CustomError';
 
 export default class MongoModel<T> implements IModel<T> {
   private schema: Schema;
@@ -10,12 +11,14 @@ export default class MongoModel<T> implements IModel<T> {
     this.model = model;
     
   }
-
+  
   public async create(obj: T) {
     return this.model.create({...obj});
   }
-
+  
   public async getById(id: string) {
+    if (!isValidObjectId(id)) throw new CustomError('Invalid id format.', 400)
     return this.model.findById(id);
   }
+
 }
