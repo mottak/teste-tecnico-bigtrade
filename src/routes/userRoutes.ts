@@ -10,22 +10,22 @@ import { updateUserSchema } from '../validators/updateUserValidate';
 
 const userRouter = Router();
 
-const userODM = new UserODM(userSchema, model('Users', userSchema) );
+const userODM = new UserODM(userSchema, model('Users', userSchema));
 const userService = new UserService(userODM)
 const userController = new UserController(userService)
 
 userRouter.post('/users', async (req, res) => {
   await newUserSchema.validateAsync(req.body)
-  userController.create(req, res)});
+  await userController.create(req, res)});
 
 userRouter.get('/users/:id', async (req, res) =>{ 
   await idSchema.validateAsync(req.params);
-  userController.getById(req, res)});
+  await userController.getById(req, res)});
 
 userRouter.put('/users/:id', async (req, res) => {
   await idSchema.validateAsync(req.params);
   await updateUserSchema.validateAsync(req.body);
-  userController.update(req, res)});
+  await userController.update(req, res)});
 
 userRouter.delete('/users/:id', async (req, res) => {
   await idSchema.validateAsync(req.params);
