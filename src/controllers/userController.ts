@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from 'express';
+import { Response, Request } from 'express';
 import IUser from '../interfaces/IUser';
 import IService from '../interfaces/IService';
 
@@ -18,6 +18,14 @@ export default class UserController{
     const { id } = req.params;
 
     const user: IUser = await this.userService.findById(id);
+    res.status(200).json(user);
+  }
+
+  async update(req: Request, res: Response<IUser>): Promise<void>  {
+    const { id } = req.params;
+    const { body } = req
+
+    const user: IUser = await this.userService.update(id, body)
     res.status(200).json(user);
   }
 
