@@ -12,13 +12,17 @@ export default class MongoModel<T> implements IModel<T> {
     
   }
   
-  public async create(obj: T) {
+  async create(obj: T) {
     return this.model.create({...obj});
   }
   
-  public async getById(id: string) {
+  async getById(id: string) {
     if (!isValidObjectId(id)) throw new CustomError('Invalid id format.', 400)
-    return this.model.findById(id);
+    return this.model.findById(id).select('-password');
   }
 
+  async update(id: string, obj: Partial<T>) {
+    if (!isValidObjectId(id)) throw new CustomError('Invalid id format.', 400)
+    return this.model.findByIdAndUpdate(id, obj, { new: true }).select('-password')
+  }
 }
