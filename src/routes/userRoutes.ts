@@ -22,8 +22,13 @@ userRouter.get('/users/:id', async (req, res) =>{
   await idSchema.validateAsync(req.params);
   userController.getById(req, res)});
 
-  userRouter.put('/users/:id', async (req, res) => {
-    await updateUserSchema.validateAsync(req.body);
-    userController.update(req, res)});
+userRouter.put('/users/:id', async (req, res) => {
+  await idSchema.validateAsync(req.params);
+  await updateUserSchema.validateAsync(req.body);
+  userController.update(req, res)});
+
+userRouter.delete('/users/:id', async (req, res) => {
+  await idSchema.validateAsync(req.params);
+  userController.delete(req, res)});
 
 export default userRouter;
