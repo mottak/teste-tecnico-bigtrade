@@ -13,12 +13,19 @@ export default class UserService<IUser> implements IService<IUser>{
     const newUser = await this.userODM.create(User);
     return newUser
   };
-
+  
   async findById(id: string): Promise<IUser> {
     const user = await this.userODM.getById(id);
     if(!user) {
       throw new CustomError('User not found', 404)
     }
     return user
+  }
+  async update(id: string, obj: Partial<IUser>): Promise<IUser> {
+    const updatedUser = await this.userODM.update(id, obj)
+    if(!updatedUser) {
+      throw new CustomError('User not found', 404)
+    }
+    return updatedUser
   }
 }
