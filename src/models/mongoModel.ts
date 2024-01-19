@@ -25,4 +25,10 @@ export default class MongoModel<T> implements IModel<T> {
     if (!isValidObjectId(id)) throw new CustomError('Invalid id format.', 400)
     return this.model.findByIdAndUpdate(id, obj, { new: true }).select('-password')
   }
+
+  async delete(id: string) {
+    if (!isValidObjectId(id)) throw new CustomError('Invalid id format.', 400)
+   const deleted = await this.model.deleteOne({ _id: id })
+  if(deleted.deletedCount === 0) throw new CustomError('Unable to delete user', 400)
+  }
 }
