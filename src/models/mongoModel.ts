@@ -1,6 +1,5 @@
 import { Model, Schema, models, model } from 'mongoose';
 import IModel from '../interfaces/IModel'
-import { CustomError } from '../helper/CustomError';
 
 export default class MongoModel<T> implements IModel<T> {
   private schema: Schema;
