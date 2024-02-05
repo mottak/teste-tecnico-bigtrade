@@ -8,6 +8,7 @@ import UserODM from '../models/user';
 import userSchema from '../models/schemas/userSchema';
 import { newPostSchema } from '../validators/newPostValidator';
 import { idSchema } from '../validators/uuidValidator';
+import { updatePostSchema } from '../validators/updatePostValidator';
 
 const postRouter = Router();
 
@@ -23,8 +24,9 @@ postRouter.post('/posts', async (req, res) => {
 postRouter.get('/posts', async (req, res) =>{ 
   await postController.getAll(req, res)});
 
-postRouter.get('/posts/:id', async (req, res) =>{ 
+postRouter.get('/posts/:id', async (req, res) => { 
   await idSchema.validateAsync(req.params);
+  await updatePostSchema.validateAsync(req.body)
   await postController.getById(req, res)});
 
 postRouter.put('/posts/:id', async (req, res) => {
