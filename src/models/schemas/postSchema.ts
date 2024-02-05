@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 import IPost from '../../interfaces/IPost';
 
-const userSchema = new Schema<IPost>({
+const postSchema = new Schema<IPost>({
   title: { type: String, required: true },
   content: { type: String, required: true },
   userId: { type: String, required: true },
@@ -18,4 +18,4 @@ const userSchema = new Schema<IPost>({
   },
 }, });
 
-export default userSchema
+export default postSchema
